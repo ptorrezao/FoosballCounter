@@ -2,7 +2,7 @@
 
 const int ledPin =  LED_BUILTIN;
 
-void showblink(){
+void blink(){
   digitalWrite(ledPin, HIGH);
   delay(100);
   digitalWrite(ledPin, LOW);
@@ -18,6 +18,5 @@ void utils_init(){
     digitalWrite(ledPin, LOW);
     delay(250); 
     digitalWrite(ledPin, HIGH);
-    delay(250); 
   }
 }

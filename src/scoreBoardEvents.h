@@ -1,3 +1,4 @@
+#include "utils.h"
 int teamAScore = 0, teamBScore = 0;
 
 const int teamAButtonPin = D1;
@@ -9,23 +10,26 @@ void resetCounters(){
   teamBScore =0;
 }
 
-void showResult(){
+void showResult(String aditionalMsg=""){
+
   String teamA = "Team A: "+ String(teamAScore);
   String teamB = "Team B: "+ String(teamBScore);
 
-  Serial.println(teamA +" : "+teamB);
+  Serial.println(teamA +" : "+teamB + " "+ aditionalMsg);
 }
 
-int button_Click(int buttonPin, int score){
-  int clickDetected = digitalRead(buttonPin);
+void AddTeamA(){
 
+}
+int button_Click(int buttonPin){
+  int clickDetected = digitalRead(buttonPin);
   if (clickDetected == HIGH) {
-      score+=1;
-      showResult();
-      delay(500);
+      delay(250);
+      blink();
+      return 1;
   } 
 
-  return score;
+  return 0;
 }
 
 void resetOn_Click(int buttonPin){
@@ -33,9 +37,8 @@ void resetOn_Click(int buttonPin){
 
   if (clickDetected == HIGH) {
       resetCounters();
+       blink();
       showResult();
-      delay(500);
-
   } 
 }
 
@@ -49,7 +52,15 @@ void scoreBoardEventsInit(){
 
 void scoreBoardEventsCheckClicks()
 {
-  teamAScore = button_Click(teamAButtonPin,teamAScore);
-  teamBScore = button_Click(teamBButtonPin,teamAScore);
-  resetOn_Click(teamBButtonPin);
+  resetOn_Click(resetButtonPin);
+
+  int totalGoalsBeforeClick = teamAScore + teamBScore; 
+  teamAScore += button_Click(teamAButtonPin);
+  teamBScore += button_Click(teamBButtonPin);
+
+  if (totalGoalsBeforeClick<(teamAScore+teamBScore))
+  {
+    showResult();
+  }
+  
 }
