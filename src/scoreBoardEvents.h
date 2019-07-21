@@ -4,6 +4,12 @@ int teamAScore = 0, teamBScore = 0;
 const int teamAButtonPin = D1;
 const int teamBButtonPin = D2;
 const int resetButtonPin = D3;
+const int SIGNAL_PIR_PIN_TEAMA = D5;               
+const int SIGNAL_PIR_PIN_TEAMB = D6;               
+const int LED_PIN = D4;     
+
+int lastTeamAState = 0;   
+int lastTeamBState = 0;   
 
 void resetCounters(){
   teamAScore =0;
@@ -37,7 +43,7 @@ void resetOn_Click(int buttonPin){
 
   if (clickDetected == HIGH) {
       resetCounters();
-       blink();
+      blink();
       showResult();
   } 
 }
@@ -46,8 +52,34 @@ void scoreBoardEventsInit(){
   pinMode(teamAButtonPin, INPUT);
   pinMode(teamBButtonPin, INPUT);
   pinMode(resetButtonPin, INPUT);
+  pinMode(SIGNAL_PIR_PIN_TEAMA, INPUT);
+  pinMode(SIGNAL_PIR_PIN_TEAMB, INPUT);
+  pinMode(LED_PIN, OUTPUT);
 
   resetCounters();
+}
+
+int checkMovement(int PIR_PIN, int lastState) 
+{
+  int state = digitalRead(PIR_PIN);
+  if(state!=lastState) {
+    lastState=state;
+  
+    if(state==HIGH) {
+      while(digitalRead(PIR_PIN) == HIGH) {
+         blink();
+        delay(100);
+      }
+      
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  } 
+
+  return 0;
 }
 
 void scoreBoardEventsCheckClicks()
@@ -57,6 +89,8 @@ void scoreBoardEventsCheckClicks()
   int totalGoalsBeforeClick = teamAScore + teamBScore; 
   teamAScore += button_Click(teamAButtonPin);
   teamBScore += button_Click(teamBButtonPin);
+  teamAScore+= checkMovement(SIGNAL_PIR_PIN_TEAMA,lastTeamAState);
+  teamBScore+= checkMovement(SIGNAL_PIR_PIN_TEAMB,lastTeamBState);
 
   if (totalGoalsBeforeClick<(teamAScore+teamBScore))
   {
