@@ -65,7 +65,7 @@ void loop() {
 
             
             client.println("<script>");
-            client.println("setTimeout(function() { location.reload();}, 1000);");
+            client.println("setTimeout(function() { location.reload();}, 5000);");
             client.println("</script>");
             client.println("</body>");
             client.println("</html>");
