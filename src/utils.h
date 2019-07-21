@@ -10,7 +10,7 @@ void blink(){
 }
 
 void utils_init(){
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(ledPin, OUTPUT);
 

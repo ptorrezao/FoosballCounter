@@ -89,8 +89,8 @@ void scoreBoardEventsCheckClicks()
   int totalGoalsBeforeClick = teamAScore + teamBScore; 
   teamAScore += button_Click(teamAButtonPin);
   teamBScore += button_Click(teamBButtonPin);
-  teamAScore+= checkMovement(SIGNAL_PIR_PIN_TEAMA,lastTeamAState);
-  teamBScore+= checkMovement(SIGNAL_PIR_PIN_TEAMB,lastTeamBState);
+ // teamAScore+= checkMovement(SIGNAL_PIR_PIN_TEAMA,lastTeamAState);
+ // teamBScore+= checkMovement(SIGNAL_PIR_PIN_TEAMB,lastTeamBState);
 
   if (totalGoalsBeforeClick<(teamAScore+teamBScore))
   {
